@@ -1,0 +1,3 @@
+# Ignore local APK builds — distribute via GitHub Releases instead
+*.apk
+*.aab
