@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CampusBuddy Beta — Your campus, connected. Download the APK and be among the first to experience campus delivery, freelancing, events & more." />
+  <meta name="theme-color" content="#0b0d2d" />
+  <title>CampusBuddy Beta — Download Now</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── TOKENS ──────────────────────────────────────── */
+    :root {
+      --c0: #0b0d2d;
+      --c1: #1f2a7a;
+      --c2: #3b4dd4;
+      --c2a: #5b6ef0;
+      --c2b: #7b8ef8;
+      --glass: rgba(31, 42, 122, 0.25);
+      --glass-b: rgba(59, 77, 212, 0.12);
+      --border: rgba(91, 110, 240, 0.22);
+      --text: #e8eaff;
+      --text-dim: rgba(232, 234, 255, 0.55);
+      --text-faint: rgba(232, 234, 255, 0.3);
+      --glow: rgba(59, 77, 212, 0.55);
+      --glow2: rgba(91, 110, 240, 0.35);
+      --radius: 18px;
+      --radius-sm: 10px;
+      --ff-head: 'Syne', sans-serif;
+      --ff-body: 'DM Sans', sans-serif;
+    }
+
+    /* ── RESET ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--c0);
+      color: var(--text);
+      font-family: var(--ff-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+
+    /* ── NOISE OVERLAY ───────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── STAR CANVAS ─────────────────────────────────── */
+    #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+    /* ── LAYOUT HELPERS ──────────────────────────────── */
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+    section { position: relative; }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 18px 0;
+      backdrop-filter: blur(20px) saturate(1.4);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      border-bottom: 1px solid rgba(91,110,240,0.1);
+      transition: background 0.3s;
+    }
+    nav.scrolled { background: rgba(11,13,45,0.85); }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1120px; margin: 0 auto; padding: 0 24px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--ff-head); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em;
+    }
+    .nav-logo-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--c1), var(--c2));
+      display: grid; place-items: center;
+      box-shadow: 0 0 16px var(--glow2);
+    }
+    .nav-logo-icon svg { width: 18px; height: 18px; }
+    .nav-badge {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--c2b);
+      background: rgba(59,77,212,0.18); border: 1px solid var(--border);
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .nav-cta {
+      font-size: 0.85rem; font-weight: 500;
+      background: var(--c2); color: #fff;
+      padding: 8px 20px; border-radius: 30px;
+      transition: box-shadow 0.25s, transform 0.2s;
+    }
+    .nav-cta:hover {
+      box-shadow: 0 0 22px var(--glow);
+      transform: translateY(-1px);
+    }
+
+    /* ── HERO ────────────────────────────────────────── */
+    .hero {
+      min-height: 100svh;
+      display: flex; align-items: center;
+      padding: 120px 0 80px;
+      overflow: hidden;
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(59,77,212,0.35) 0%, transparent 70%);
+      top: -100px; left: -150px;
+      animation: drift1 12s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(91,110,240,0.2) 0%, transparent 70%);
+      top: 40%; right: -80px;
+      animation: drift2 15s ease-in-out infinite alternate;
+    }
+    @keyframes drift1 { from { transform: translate(0,0); } to { transform: translate(40px, 30px); } }
+    @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-30px, -40px); } }
+
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--c2b);
+      background: rgba(59,77,212,0.15); border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 30px; margin-bottom: 24px;
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--c2a);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(91,110,240,0.7); }
+      50% { box-shadow: 0 0 0 5px rgba(91,110,240,0); }
+    }
+    .hero-title {
+      font-family: var(--ff-head); font-weight: 800;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1.05; letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--c2a) 0%, var(--c2b) 60%, #a8b4ff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.05rem; color: var(--text-dim); line-height: 1.7;
+      max-width: 440px; margin-bottom: 36px; font-weight: 300;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%);
+      color: #fff; font-family: var(--ff-head); font-weight: 700;
+      font-size: 0.95rem; padding: 14px 28px; border-radius: 50px;
+      border: 1px solid rgba(91,110,240,0.4);
+      box-shadow: 0 0 30px var(--glow2), 0 4px 20px rgba(0,0,0,0.3);
+      transition: box-shadow 0.3s, transform 0.2s, border-color 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.08));
+      pointer-events: none;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 50px var(--glow), 0 8px 30px rgba(0,0,0,0.4);
+      transform: translateY(-2px);
+      border-color: rgba(123,142,248,0.6);
+    }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--text-dim); font-size: 0.9rem; padding: 14px 24px;
+      border-radius: 50px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover { color: var(--text); border-color: var(--c2a); background: rgba(59,77,212,0.1); }
+
+    /* hero phone mockup */
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .phone-wrap {
+      position: relative; width: 240px;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+    .phone-glow {
+      position: absolute; inset: -40px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(59,77,212,0.4) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .phone-frame {
+      background: linear-gradient(160deg, rgba(31,42,122,0.8), rgba(11,13,45,0.9));
+      border: 1.5px solid rgba(91,110,240,0.35);
+      border-radius: 36px;
+      padding: 12px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 60px rgba(59,77,212,0.2);
+      overflow: hidden;
+    }
+    .phone-screen {
+      background: linear-gradient(160deg, var(--c1), var(--c0));
+      border-radius: 26px;
+      height: 420px;
+      display: flex; flex-direction: column;
+      overflow: hidden; position: relative;
+    }
+    .phone-status {
+      padding: 12px 16px 4px;
+      display: flex; justify-content: space-between;
+      font-size: 0.6rem; font-weight: 600; opacity: 0.5;
+    }
+    .phone-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(91,110,240,0.15);
+    }
+    .phone-header-row {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
+    }
+    .phone-logo { font-family: var(--ff-head); font-size: 0.85rem; font-weight: 800; }
+    .phone-avatar { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--c2), var(--c2b)); }
+    .phone-search {
+      background: rgba(91,110,240,0.1); border-radius: 8px;
+      padding: 6px 10px; font-size: 0.6rem; color: var(--text-faint);
+      border: 1px solid rgba(91,110,240,0.1);
+    }
+    .phone-content { padding: 12px 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .phone-card {
+      background: rgba(59,77,212,0.18); border: 1px solid rgba(91,110,240,0.2);
+      border-radius: 12px; padding: 10px 12px;
+    }
+    .phone-card-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .phone-card-label { font-size: 0.6rem; font-weight: 600; opacity: 0.8; }
+    .phone-card-val { font-size: 0.55rem; opacity: 0.45; margin-top: 2px; }
+    .phone-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c2a); flex-shrink: 0; }
+    .phone-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .phone-chip {
+      font-size: 0.5rem; padding: 3px 8px; border-radius: 20px;
+      background: rgba(91,110,240,0.15); border: 1px solid rgba(91,110,240,0.2);
+      white-space: nowrap;
+    }
+    .phone-bar { display: flex; gap: 4px; align-items: flex-end; height: 28px; }
+    .phone-bar-col { flex: 1; background: rgba(91,110,240,0.3); border-radius: 3px; }
+    .phone-nav {
+      padding: 10px 20px;
+      border-top: 1px solid rgba(91,110,240,0.15);
+      display: flex; justify-content: space-around;
+    }
+    .phone-nav-item { font-size: 0.55rem; opacity: 0.45; text-align: center; }
+    .phone-nav-item.active { opacity: 1; color: var(--c2b); }
+
+    /* ── BETA NOTICE ─────────────────────────────────── */
+    .beta-notice {
+      padding: 16px 0 0;
+    }
+    .beta-card {
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(255, 180, 50, 0.07);
+      border: 1px solid rgba(255, 180, 50, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      max-width: 680px;
+    }
+    .beta-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .beta-text { font-size: 0.82rem; color: rgba(255,220,140,0.8); line-height: 1.5; }
+    .beta-text strong { color: rgba(255,220,140,1); }
+
+    /* ── DOWNLOAD SECTION ────────────────────────────── */
+    .download { padding: 100px 0; }
+    .section-label {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--c2b); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--ff-head); font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.03em; margin-bottom: 10px;
+    }
+    .section-sub {
+      color: var(--text-dim); font-size: 0.95rem; font-weight: 300; max-width: 480px;
+    }
+    .dl-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 28px; margin-top: 48px; align-items: start;
+    }
+    .dl-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .dl-card::before {
+      content: '';
+      position: absolute; inset: 0; border-radius: 24px;
+      background: linear-gradient(135deg, rgba(59,77,212,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .dl-card:hover {
+      border-color: rgba(91,110,240,0.5);
+      box-shadow: 0 0 60px rgba(59,77,212,0.15);
+    }
+    .dl-main { grid-column: 1 / -1; }
+    .dl-android-icon {
+      width: 56px; height: 56px; margin-bottom: 24px;
+      background: linear-gradient(135deg, #3ddc84, #2ab06f);
+      border-radius: 16px; display: grid; place-items: center;
+      box-shadow: 0 0 30px rgba(61,220,132,0.3);
+    }
+    .dl-android-icon svg { width: 32px; height: 32px; }
+    .dl-title { font-family: var(--ff-head); font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+    .dl-meta {
+      display: flex; gap: 24px; flex-wrap: wrap; margin: 20px 0 28px;
+    }
+    .dl-meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .dl-meta-key { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+    .dl-meta-val { font-size: 0.95rem; font-weight: 500; color: var(--c2b); }
+    .dl-divider { height: 1px; background: var(--border); margin: 24px 0; }
+    .btn-download {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%);
+      color: #fff; font-family: var(--ff-head); font-weight: 700;
+      font-size: 1rem; padding: 17px 34px; border-radius: 50px;
+      border: 1.5px solid rgba(91,110,240,0.5);
+      box-shadow: 0 0 40px var(--glow), 0 8px 30px rgba(0,0,0,0.35);
+      transition: box-shadow 0.3s, transform 0.25s, border-color 0.3s;
+      position: relative; overflow: hidden; width: 100%; justify-content: center;
+    }
+    .btn-download::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .btn-download:hover {
+      box-shadow: 0 0 70px rgba(59,77,212,0.7), 0 12px 40px rgba(0,0,0,0.45);
+      transform: translateY(-3px);
+      border-color: rgba(123,142,248,0.8);
+    }
+    .btn-download:active { transform: translateY(-1px); }
+    .dl-note { font-size: 0.72rem; color: var(--text-faint); text-align: center; margin-top: 12px; }
+
+    /* requirements card */
+    .req-card { height: 100%; display: flex; flex-direction: column; gap: 16px; }
+    .req-title { font-family: var(--ff-head); font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .req-list { display: flex; flex-direction: column; gap: 10px; }
+    .req-item { display: flex; gap: 10px; align-items: flex-start; }
+    .req-check { color: var(--c2b); font-size: 0.9rem; margin-top: 1px; flex-shrink: 0; }
+    .req-text { font-size: 0.82rem; color: var(--text-dim); }
+
+    /* changelog card */
+    .log-entry { display: flex; gap: 12px; margin-bottom: 14px; }
+    .log-dot-col { display: flex; flex-direction: column; align-items: center; gap: 0; }
+    .log-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c2a); flex-shrink: 0; margin-top: 4px; }
+    .log-line { flex: 1; width: 1px; background: var(--border); margin-top: 4px; }
+    .log-body { flex: 1; }
+    .log-tag { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c2b); margin-bottom: 3px; }
+    .log-desc { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* ── FEATURES ────────────────────────────────────── */
+    .features { padding: 80px 0 100px; }
+    .features-head { text-align: center; max-width: 560px; margin: 0 auto 60px; }
+    .features-head .section-sub { margin: 0 auto; text-align: center; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .feat-card {
+      background: var(--glass-b);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      position: relative; overflow: hidden;
+      cursor: default;
+    }
+    .feat-card::after {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(59,77,212,0.06) 0%, transparent 60%);
+      pointer-events: none; opacity: 0; transition: opacity 0.25s;
+    }
+    .feat-card:hover {
+      border-color: rgba(91,110,240,0.45);
+      box-shadow: 0 8px 40px rgba(59,77,212,0.12);
+      transform: translateY(-4px);
+    }
+    .feat-card:hover::after { opacity: 1; }
+    .feat-icon {
+      width: 46px; height: 46px; border-radius: 12px; margin-bottom: 18px;
+      display: grid; place-items: center; font-size: 1.2rem;
+    }
+    .feat-name { font-family: var(--ff-head); font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .feat-desc { font-size: 0.82rem; color: var(--text-dim); line-height: 1.55; }
+
+    /* ── SCREENSHOTS ─────────────────────────────────── */
+    .screenshots { padding: 80px 0 100px; overflow: hidden; }
+    .screenshots-head { text-align: center; max-width: 560px; margin: 0 auto 60px; }
+    .screenshots-head .section-sub { margin: 0 auto; }
+    .ss-track {
+      display: flex; gap: 20px; overflow-x: auto;
+      padding: 16px 24px 24px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .ss-track::-webkit-scrollbar { display: none; }
+    .ss-item {
+      flex: 0 0 200px; scroll-snap-align: start;
+      border-radius: 22px; overflow: hidden;
+      border: 1px solid var(--border);
+      background: linear-gradient(160deg, var(--c1), var(--c0));
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+    }
+    .ss-item:hover { transform: scale(1.04) translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .ss-mock { height: 360px; display: flex; flex-direction: column; overflow: hidden; }
+    .ss-top {
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid rgba(91,110,240,0.15);
+      font-family: var(--ff-head); font-size: 0.7rem; font-weight: 700;
+    }
+    .ss-body { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .ss-row {
+      background: rgba(59,77,212,0.15); border: 1px solid rgba(91,110,240,0.1);
+      border-radius: 8px; padding: 8px 10px;
+    }
+    .ss-row-label { font-size: 0.55rem; font-weight: 600; margin-bottom: 3px; }
+    .ss-row-bar { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--c2), var(--c2b)); }
+    .ss-label { font-size: 0.58rem; color: var(--text-faint); text-align: center; margin-top: 8px; }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(91,110,240,0.12);
+      padding: 48px 0 32px;
+    }
+    .footer-inner {
+      display: flex; gap: 40px; flex-wrap: wrap;
+      justify-content: space-between; align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .footer-brand { max-width: 260px; }
+    .footer-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--ff-head); font-weight: 800; font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    .footer-desc { font-size: 0.8rem; color: var(--text-faint); line-height: 1.6; }
+    .footer-col h4 {
+      font-family: var(--ff-head); font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 14px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li a {
+      font-size: 0.82rem; color: var(--text-faint);
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--c2b); }
+    .footer-socials { display: flex; gap: 10px; margin-top: 14px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(59,77,212,0.1);
+      display: grid; place-items: center;
+      font-size: 0.75rem; color: var(--text-dim);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .social-btn:hover { border-color: var(--c2a); color: var(--c2b); background: rgba(59,77,212,0.2); }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+      padding-top: 24px; border-top: 1px solid rgba(91,110,240,0.1);
+      font-size: 0.75rem; color: var(--text-faint);
+    }
+
+    /* ── SCROLL ANIMATIONS ───────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-eyebrow { margin: 0 auto 24px; }
+      .hero-sub { margin: 0 auto 36px; }
+      .hero-actions { justify-content: center; }
+      .hero-visual { order: -1; }
+      .phone-wrap { width: 200px; }
+      .phone-screen { height: 350px; }
+      .dl-grid { grid-template-columns: 1fr; }
+      .dl-main { grid-column: auto; }
+    }
+    @media (max-width: 600px) {
+      .nav-cta { display: none; }
+      .hero-title { font-size: 2.4rem; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .footer-inner { flex-direction: column; gap: 32px; }
+    }
+    @media (max-width: 400px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="stars"></canvas>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="3"/>
+            <path d="M6 20v-2a6 6 0 0 1 12 0v2"/>
+            <path d="M3 12h2M19 12h2M12 3V1"/>
+          </svg>
+        </div>
+        CampusBuddy
+        <span class="nav-badge">Beta</span>
+      </div>
+      <a href="app-release.apk" download="CampusBuddy-v1.0-Beta.apk" class="nav-cta">Download APK</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="wrap">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-eyebrow reveal">
+            <span class="eyebrow-dot"></span>
+            Early Beta Access · Android
+          </div>
+          <h1 class="hero-title reveal reveal-delay-1">
+            Your Campus.<br /><span>Connected.</span>
+          </h1>
+          <p class="hero-sub reveal reveal-delay-2">
+            CampusBuddy brings your entire campus ecosystem into one app — deliveries, freelancing, events, networking, and collaboration. Built by students, for students.
+          </p>
+          <div class="hero-actions reveal reveal-delay-3">
+            <a href="app-release.apk" download="CampusBuddy-v1.0-Beta.apk" class="btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download Beta APK
+            </a>
+            <a href="#features" class="btn-secondary">
+              Explore Features
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </div>
+          <div class="beta-notice reveal reveal-delay-4">
+            <div class="beta-card">
+              <span class="beta-icon">⚠️</span>
+              <p class="beta-text">
+                <strong>Beta version —</strong> CampusBuddy is actively being tested. Some features may be incomplete or subject to change. Your feedback shapes the final product. No real money involved !
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual reveal reveal-delay-2">
+          <div class="phone-wrap">
+            <div class="phone-glow"></div>
+            <div class="phone-frame">
+              <div class="phone-screen">
+                <div class="phone-status">
+                  <span>9:41</span><span>●●● 5G</span>
+                </div>
+                <div class="phone-header">
+                  <div class="phone-header-row">
+                    <span class="phone-logo">CampusBuddy</span>
+                    <div class="phone-avatar"></div>
+                  </div>
+                  <div class="phone-search">🔍  Search campus services…</div>
+                </div>
+                <div class="phone-content">
+                  <div class="phone-chips">
+                    <span class="phone-chip">📦 Delivery</span>
+                    <span class="phone-chip">💼 Freelance</span>
+                    <span class="phone-chip">🎉 Events</span>
+                  </div>
+                  <div class="phone-card">
+                    <div class="phone-card-row">
+                      <div>
+                        <div class="phone-card-label">Active Delivery</div>
+                        <div class="phone-card-val">📦 Hostel → Library</div>
+                      </div>
+                      <div class="phone-dot"></div>
+                    </div>
+                  </div>
+                  <div class="phone-card">
+                    <div class="phone-card-label" style="margin-bottom:8px">Trending Gigs</div>
+                    <div class="phone-bar">
+                      <div class="phone-bar-col" style="height:60%"></div>
+                      <div class="phone-bar-col" style="height:85%"></div>
+                      <div class="phone-bar-col" style="height:45%"></div>
+                      <div class="phone-bar-col" style="height:100%"></div>
+                      <div class="phone-bar-col" style="height:70%"></div>
+                    </div>
+                  </div>
+                  <div class="phone-card">
+                    <div class="phone-card-row">
+                      <div>
+                        <div class="phone-card-label">Upcoming Event</div>
+                        <div class="phone-card-val">Hackathon 2025 • Fri 6 PM</div>
+                      </div>
+                      <span style="font-size:0.6rem;color:var(--c2b)">→</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="phone-nav">
+                  <div class="phone-nav-item active">🏠<br/>Home</div>
+                  <div class="phone-nav-item">📦<br/>Deliver</div>
+                  <div class="phone-nav-item">💼<br/>Gigs</div>
+                  <div class="phone-nav-item">👥<br/>Network</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section class="download" id="download">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="section-label">Get the App</span>
+        <h2 class="section-title">Download CampusBuddy</h2>
+        <p class="section-sub">The beta is live. Be among the first students on your campus to experience it.</p>
+      </div>
+      <div class="dl-grid">
+        <!-- Main download card -->
+        <div class="dl-card dl-main reveal">
+          <div class="dl-android-icon">
+            <svg viewBox="0 0 24 24" fill="#fff">
+              <path d="M17.523 15.341a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM6.477 15.341a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM2.75 9.75h18.5v8.75A2.75 2.75 0 0 1 18.5 21h-13A2.75 2.75 0 0 1 2.75 18.5V9.75ZM7.5 3.5l-1.5 2.75M16.5 3.5l1.5 2.75M8.75 9.75V3.75M15.25 9.75V3.75"/>
+            </svg>
+          </div>
+          <div class="dl-title">CampusBuddy.apk</div>
+          <div class="dl-meta">
+            <div class="dl-meta-item">
+              <span class="dl-meta-key">Version</span>
+              <span class="dl-meta-val">v1.0 Beta</span>
+            </div>
+            <div class="dl-meta-item">
+              <span class="dl-meta-key">Size</span>
+              <span class="dl-meta-val">~45 MB</span>
+            </div>
+            <div class="dl-meta-item">
+              <span class="dl-meta-key">Released</span>
+              <span class="dl-meta-val">May 2025</span>
+            </div>
+            <div class="dl-meta-item">
+              <span class="dl-meta-key">Platform</span>
+              <span class="dl-meta-val">Android 7.0+</span>
+            </div>
+          </div>
+          <div class="dl-divider"></div>
+          <a href="app-release.apk" download="CampusBuddy-v1.0-Beta.apk" class="btn-download">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download APK
+          </a>
+          <p class="dl-note">Direct APK download · Enable "Install from unknown sources" in Android Settings</p>
+        </div>
+
+        <!-- Requirements card -->
+        <div class="dl-card reveal reveal-delay-1">
+          <div class="req-card">
+            <div>
+              <div class="req-title">Requirements</div>
+              <p style="font-size:0.78rem;color:var(--text-faint);margin-top:4px">Make sure your device supports it</p>
+            </div>
+            <div class="req-list">
+              <div class="req-item"><span class="req-check">✓</span><span class="req-text">Android 7.0 (Nougat) or higher</span></div>
+              <div class="req-item"><span class="req-check">✓</span><span class="req-text">Minimum 2 GB RAM</span></div>
+              <div class="req-item"><span class="req-check">✓</span><span class="req-text">50 MB free storage</span></div>
+              <div class="req-item"><span class="req-check">✓</span><span class="req-text">Active internet connection</span></div>
+              <div class="req-item"><span class="req-check">✓</span><span class="req-text">Campus email for verification</span></div>
+            </div>
+            <div style="background:rgba(59,77,212,0.1);border:1px solid var(--border);border-radius:10px;padding:14px;">
+              <p style="font-size:0.75rem;color:var(--text-dim);line-height:1.55">
+                <strong style="color:var(--c2b)">How to install:</strong><br/>
+                1. Download the APK<br/>
+                2. Open Settings → Security<br/>
+                3. Enable "Unknown Sources"<br/>
+                4. Open the APK and tap Install
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Changelog card -->
+        <div class="dl-card reveal reveal-delay-2">
+          <div class="req-title" style="margin-bottom:20px">v1.0 Beta — What's inside</div>
+          <div class="log-entry">
+            <div class="log-dot-col"><div class="log-dot"></div><div class="log-line"></div></div>
+            <div class="log-body"><div class="log-tag">New</div><div class="log-desc">Campus feed & stories — share updates with your campus</div></div>
+          </div>
+          <div class="log-entry">
+            <div class="log-dot-col"><div class="log-dot"></div><div class="log-line"></div></div>
+            <div class="log-body"><div class="log-tag">New</div><div class="log-desc">Delivery marketplace — order & deliver within campus</div></div>
+          </div>
+          <div class="log-entry">
+            <div class="log-dot-col"><div class="log-dot"></div><div class="log-line"></div></div>
+            <div class="log-body"><div class="log-tag">New</div><div class="log-desc">Freelancing board — post or find micro-gigs</div></div>
+          </div>
+          <div class="log-entry">
+            <div class="log-dot-col"><div class="log-dot" style="background:rgba(91,110,240,0.4)"></div></div>
+            <div class="log-body"><div class="log-tag" style="color:var(--text-faint)">Coming</div><div class="log-desc">Wallet, Events & Team Finder in next update</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="wrap">
+      <div class="features-head reveal">
+        <span class="section-label">What's Inside</span>
+        <h2 class="section-title">Everything your campus needs</h2>
+        <p class="section-sub">Six core modules built to make student life smoother, smarter, and more connected.</p>
+      </div>
+      <div class="features-grid">
+
+        <div class="feat-card reveal">
+          <div class="feat-icon" style="background:rgba(99,102,241,0.15)">📣</div>
+          <div class="feat-name">Feed & Stories</div>
+          <p class="feat-desc">Stay in the loop with real-time campus updates, stories, and announcements. Share moments, ideas, and opportunities with your peers.</p>
+        </div>
+
+        <div class="feat-card reveal reveal-delay-1">
+          <div class="feat-icon" style="background:rgba(34,197,94,0.12)">📦</div>
+          <div class="feat-name">Delivery</div>
+          <p class="feat-desc">Order food, essentials, or notes from classmates. Earn by delivering across campus — fast, peer-to-peer, and cashless.</p>
+        </div>
+
+        <div class="feat-card reveal reveal-delay-2">
+          <div class="feat-icon" style="background:rgba(251,191,36,0.12)">💼</div>
+          <div class="feat-name">Freelancing</div>
+          <p class="feat-desc">Post micro-gigs or find talent on campus. Design, coding, tutoring, writing — monetize your skills between classes.</p>
+        </div>
+
+        <div class="feat-card reveal reveal-delay-1">
+          <div class="feat-icon" style="background:rgba(239,68,68,0.12)">🎉</div>
+          <div class="feat-name">Events</div>
+          <p class="feat-desc">Discover clubs, hackathons, fests, and workshops. RSVP, get reminders, and never miss what's happening on campus.</p>
+        </div>
+
+        <div class="feat-card reveal reveal-delay-2">
+          <div class="feat-icon" style="background:rgba(168,85,247,0.12)">💳</div>
+          <div class="feat-name">Wallet</div>
+          <p class="feat-desc">A lightweight campus wallet for seamless payments. Pay for deliveries, gigs, and events without leaving the app.</p>
+        </div>
+
+        <div class="feat-card reveal reveal-delay-3">
+          <div class="feat-icon" style="background:rgba(20,184,166,0.12)">🤝</div>
+          <div class="feat-name">Team Finder</div>
+          <p class="feat-desc">Find teammates for projects, hackathons, or startups. Filter by skills, interest, and availability to build your dream squad.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section class="screenshots">
+    <div class="wrap">
+      <div class="screenshots-head reveal">
+        <span class="section-label">Preview</span>
+        <h2 class="section-title">A glimpse inside</h2>
+        <p class="section-sub">Early UI snapshots. Scroll to explore the beta experience.</p>
+      </div>
+    </div>
+    <div class="ss-track reveal">
+      <!-- Screenshot: Home -->
+      <div class="ss-item">
+        <div class="ss-mock">
+          <div class="ss-top">🏠 Home Feed</div>
+          <div class="ss-body">
+            <div class="ss-row"><div class="ss-row-label">📣 New post by Arjun</div><div class="ss-row-bar" style="width:80%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">📦 Delivery request</div><div class="ss-row-bar" style="width:60%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">🎉 Event tonight</div><div class="ss-row-bar" style="width:90%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">💼 New gig posted</div><div class="ss-row-bar" style="width:50%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">🤝 Team request</div><div class="ss-row-bar" style="width:70%"></div></div>
+          </div>
+        </div>
+        <div class="ss-label">Home Feed</div>
+      </div>
+      <!-- Screenshot: Delivery -->
+      <div class="ss-item">
+        <div class="ss-mock">
+          <div class="ss-top">📦 Delivery</div>
+          <div class="ss-body">
+            <div class="ss-row"><div class="ss-row-label">Canteen → Block C</div><div class="ss-row-bar" style="width:100%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Library → Hostel 3</div><div class="ss-row-bar" style="width:45%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Gate 2 → Dept. Lab</div><div class="ss-row-bar" style="width:72%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Stationery → PG</div><div class="ss-row-bar" style="width:30%"></div></div>
+          </div>
+        </div>
+        <div class="ss-label">Delivery</div>
+      </div>
+      <!-- Screenshot: Gigs -->
+      <div class="ss-item">
+        <div class="ss-mock">
+          <div class="ss-top">💼 Gigs</div>
+          <div class="ss-body">
+            <div class="ss-row"><div class="ss-row-label">Logo Design — ₹500</div><div class="ss-row-bar" style="width:90%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">DSA Tutoring — ₹300</div><div class="ss-row-bar" style="width:65%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Resume Review — ₹150</div><div class="ss-row-bar" style="width:40%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Photo Editing — ₹200</div><div class="ss-row-bar" style="width:55%"></div></div>
+          </div>
+        </div>
+        <div class="ss-label">Freelancing</div>
+      </div>
+      <!-- Screenshot: Events -->
+      <div class="ss-item">
+        <div class="ss-mock">
+          <div class="ss-top">🎉 Events</div>
+          <div class="ss-body">
+            <div class="ss-row"><div class="ss-row-label">Hackathon 2025 · Fri</div><div class="ss-row-bar" style="width:100%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Cultural Fest · Sat</div><div class="ss-row-bar" style="width:80%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Startup Talk · Thu</div><div class="ss-row-bar" style="width:55%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Sports Day · Sun</div><div class="ss-row-bar" style="width:70%"></div></div>
+          </div>
+        </div>
+        <div class="ss-label">Events</div>
+      </div>
+      <!-- Screenshot: Team Finder -->
+      <div class="ss-item">
+        <div class="ss-mock">
+          <div class="ss-top">🤝 Team Finder</div>
+          <div class="ss-body">
+            <div class="ss-row"><div class="ss-row-label">React Dev needed</div><div class="ss-row-bar" style="width:85%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">UI Designer · Hack</div><div class="ss-row-bar" style="width:60%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">ML Engineer wanted</div><div class="ss-row-bar" style="width:75%"></div></div>
+            <div class="ss-row"><div class="ss-row-label">Writer for newsletter</div><div class="ss-row-bar" style="width:45%"></div></div>
+          </div>
+        </div>
+        <div class="ss-label">Team Finder</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="nav-logo-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                <circle cx="12" cy="8" r="3"/>
+                <path d="M6 20v-2a6 6 0 0 1 12 0v2"/>
+              </svg>
+            </div>
+            CampusBuddy
+          </div>
+          <p class="footer-desc">Your campus, connected. Built for students who want to do more — together.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
+            <a href="#" class="social-btn" title="Instagram">◻</a>
+            <a href="#" class="social-btn" title="LinkedIn">in</a>
+            <a href="#" class="social-btn" title="Discord">⊕</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>App</h4>
+          <ul>
+            <li><a href="app-release.apk" download="CampusBuddy-v1.0-Beta.apk">Download Beta</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#">Release Notes</a></li>
+            <li><a href="#">Roadmap</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Bug Report</a></li>
+            <li><a href="#">Join Beta Group</a></li>
+            <li><a href="#">support@campusbuddy.app</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+            <li><a href="#">Beta Agreement</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 CampusBuddy. All rights reserved.</span>
+        <span>Made with ♥ for students</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── STARS ───────────────────────────────────────── */
+    (function () {
+      const canvas = document.getElementById('stars');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+      const N = 140;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function init() {
+        stars = [];
+        for (let i = 0; i < N; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.2 + 0.2,
+            a: Math.random(),
+            da: (Math.random() - 0.5) * 0.005,
+            speed: Math.random() * 0.08 + 0.01
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+          s.a += s.da;
+          if (s.a < 0.1 || s.a > 1) s.da *= -1;
+          s.y += s.speed;
+          if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(180,190,255,${s.a * 0.6})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      init();
+      draw();
+      window.addEventListener('resize', () => { resize(); init(); });
+    })();
+
+    /* ── NAV SCROLL ──────────────────────────────────── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* ── REVEAL ON SCROLL ────────────────────────────── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
